@@ -1,24 +1,46 @@
-from random import randint
+# import math
 
-myarr = [(1, 1), (1, 1), (1, 1), (1, 1), (1, 1)]
+# degree = 180.0 # (-1, 0) # links # WRONG (-1, -1)
+# degree_vector = ( round( math.sin(degree) ), round( math.sin(degree) ) )
 
-# new_arr = []
-# for index, item in enumerate(myarr):
-#     percent = randint(1, 100)
-#     if percent < 20:
-#         myarr[index] = 9
+# # degree = 270.0 / 2 # (0, -1) # af # WRONG (1, 0)
+# # degree_vector = ( round( math.sin(degree) ), round( math.cos(degree) ) )
 
-# print(myarr)
+# # degree = 0.0 # (1, 0) # regs # REG
+# # degree = 90.0 # (0, 1) # boontoe # REG
+# # degree_vector = ( round( math.cos(degree) ), round( math.sin(degree) ) )
 
-# print(0.20 * 5)
+# # print(degree_vector)
 
-change_percentage = 20
-array_left = len(myarr)
-random_changes = round(array_left * (change_percentage / 100))
-used_indexes = []
-for _ in range(random_changes):
-    random_index = randint(0, array_left - 1)
-    while random_index in used_indexes:
-        random_index = randint(0, array_left - 1)
-    used_indexes.append(random_index)
-    myarr[random_index] = 9
+# # while degree >= 360.0:
+# #     degree -= 360.0
+
+# # degree = 0.0
+# # vector = ( round(math.sin(degree)), round(math.cos(degree)))
+# # print(f'Op {degree}, {vector}')
+
+# # degree = 90.0
+# # vector = ( round(math.sin(degree)), round(math.cos(degree)))
+# # print(f'Regs {degree}, {vector}')
+
+# # degree = 180.0
+# # vector = ( round(math.sin(degree)), round(math.cos(degree)))
+# # print(f'Af {degree}, {vector}')
+
+# # degree = 270.0
+# # vector = ( round(math.sin(degree)), round(math.cos(degree)))
+# # print(f'Links {degree}, {vector}')
+
+
+# # print(round(math.sin(90.0)), round(math.cos(90.0)), round(math.tan(90.0)))
+# # print(round(math.sin(180.0)), round(math.cos(180.0)), round(math.tan(180.0)))
+# # print(round(math.sin(270.0)), round(math.cos(270.0)), round(math.tan(270.0)))
+
+# # print(round(math.sin(0)), round(math.cos(0)), round(math.tan(0)))
+# # print(round(math.sin(360.0)), round(math.cos(360.0)), round(math.tan(360.0)))
+
+import math
+
+degree = 100.0
+radians = degree * (math.pi / 180)
+vector = (math.cos(radians), math.sin(radians))

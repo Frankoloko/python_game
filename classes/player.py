@@ -1,6 +1,7 @@
 import pygame
 from random import randint
 import cmath
+import math
 
 class Player:
     def __init__(self, screen_height, screen_width, screen, rounds):
@@ -19,12 +20,15 @@ class Player:
         self.move_counter = 0
         self.dead = False
         self.size = 10
-        self.move_speed = 10
+        self.move_speed = 20
 
         # Create X amount of moves for the player
         self.moves = []
         for _ in range(rounds):
-            self.moves.append((randint(-self.move_speed, self.move_speed), randint(-self.move_speed, self.move_speed)))
+            # self.moves.append((randint(-self.move_speed, self.move_speed), randint(-self.move_speed, self.move_speed)))
+
+            random_degree = randint(1, 360)
+            self.moves.append(random_degree)
 
         # Start at bottom of screen
         self.rect = pygame.Rect(self.screen_width / 2, self.screen_height - 20, self.size, self.size)
@@ -33,7 +37,11 @@ class Player:
 
     def run_next_move(self):
         if not self.dead:
-            self.rect.move_ip(self.moves[self.move_counter])
+            degree = self.moves[self.move_counter]
+            radians = degree * (math.pi / 180)
+            degree_vector = (math.cos(radians) * self.move_speed, math.sin(radians) * self.move_speed)
+
+            self.rect.move_ip(degree_vector)
             self.move_counter += 1
             self.__check_outside_screen()
 
@@ -69,7 +77,8 @@ class Player:
             while random_index in used_indexes:
                 random_index = randint(0, array_left - 1)
             used_indexes.append(random_index)
-            self.moves[random_index] = (randint(-self.move_speed, self.move_speed), randint(-self.move_speed, self.move_speed))
+            random_degree = randint(1, 360)
+            self.moves[random_index] = random_degree
 
     def clone(self):
         '''

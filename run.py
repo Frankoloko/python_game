@@ -11,6 +11,7 @@ class Game:
         pygame.init()
         pygame.display.set_caption('Artificial Intelligence')
 
+        self.AUTO_RUN = True
         self.CLOCK = pygame.time.Clock()
         self.SCREEN_WIDTH = 800
         self.SCREEN_HEIGHT = 800
@@ -34,7 +35,7 @@ class Game:
         # Create Text
         FONT = pygame.font.SysFont('monospace', 20)
         # FONT = pygame.font.SysFont('Comic Sans MS', 15)
-        self.TXT_GENENRATION = Text(self.SCREEN, FONT, (self.SCREEN_WIDTH - 170, 10))
+        self.TXT_GENENRATION = Text(self.SCREEN, FONT, (self.SCREEN_WIDTH - 185, 10))
 
         while True:
             self.CLOCK.tick(40)
@@ -90,7 +91,10 @@ class Game:
         self.best_player.draw_winner()
 
         self.GENERATION += 1
-        self.GAME_PAUSED = True
+        self.GAME_PAUSED = True        
+            
+        if self.AUTO_RUN:
+            self.start_next_generation()
 
     def start_next_generation(self):
         # Create all Players
