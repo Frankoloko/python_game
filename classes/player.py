@@ -7,6 +7,7 @@ class Player:
         self.screen = screen
         self.screen_height = screen_height
         self.screen_width = screen_width
+        self.rounds = rounds
 
         # Set colours
         # self.colour = (180, 180, 180) # Darker
@@ -18,11 +19,12 @@ class Player:
         self.move_counter = 0
         self.dead = False
         self.size = 10
+        self.move_speed = 10
 
         # Create X amount of moves for the player
         self.moves = []
         for _ in range(rounds):
-            self.moves.append((randint(-2, 2), randint(-2, 2)))
+            self.moves.append((randint(-self.move_speed, self.move_speed), randint(-self.move_speed, self.move_speed)))
 
         # Start at bottom of screen
         self.rect = pygame.Rect(self.screen_width / 2, self.screen_height - 20, self.size, self.size)
@@ -52,6 +54,30 @@ class Player:
         # self.colour = (69, 137, 255) # Blue 2 whiter
         self.colour = (0, 94, 255) # Blue 2
         self.draw()
+
+    def evolve(self, change_percentage):
+        '''
+            Evolve will take this players moves, evolve them a bit, then return a new player object
+            with those moves
+        '''
+        # Make the player the current player's moves, but with a percentage change
+        array_left = len(self.moves)
+        random_changes = round(array_left * (change_percentage / 100))
+        used_indexes = []
+        for _ in range(random_changes):
+            random_index = randint(0, array_left - 1)
+            while random_index in used_indexes:
+                random_index = randint(0, array_left - 1)
+            used_indexes.append(random_index)
+            self.moves[random_index] = (randint(-self.move_speed, self.move_speed), randint(-self.move_speed, self.move_speed))
+
+    def clone(self):
+        '''
+            This creates a copy of this player AND IT'S MOVES, but resets all other values
+        '''
+        new_player = Player(self.screen_height, self.screen_width, self.screen, self.rounds)
+        new_player.moves = self.moves.copy()
+        return new_player
 
     # PRIVATE FUNCTIONS
 

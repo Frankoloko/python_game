@@ -14,7 +14,8 @@ class Game:
         self.CLOCK = pygame.time.Clock()
         self.SCREEN_WIDTH = 800
         self.SCREEN_HEIGHT = 800
-        self.ROUND_TIME = 300
+        self.ROUND_TIME = 100
+        self.ROUNDS_LEFT = self.ROUND_TIME
         self.GENERATION = 0
         self.SCREEN = pygame.display.set_mode((self.SCREEN_WIDTH, self.SCREEN_HEIGHT))
         self.BACKGROUND_COLOR = (36, 36, 36)
@@ -41,9 +42,11 @@ class Game:
             for event in pygame.event.get():
                 if event.type == QUIT:
                     pygame.quit()
+                    return
                 elif event.type == KEYDOWN:
                     if event.key == K_ESCAPE:
                         pygame.quit()
+                        return
                     elif self.GAME_PAUSED and event.key == K_RETURN:
                         self.start_next_generation()
 
@@ -66,9 +69,12 @@ class Game:
             goal.draw()
 
     def update(self):
-        self.ROUND_TIME -= 1
+        if self.GAME_PAUSED:
+            return
 
-        if self.ROUND_TIME <= 0:
+        self.ROUNDS_LEFT -= 1
+
+        if self.ROUNDS_LEFT <= 0:
             self.pause_game()
         else:
             self.draw_everything()
@@ -76,25 +82,31 @@ class Game:
         pygame.display.flip()
 
     def pause_game(self):
-            # Pause the game & draw the best player green
-            best_player = self.PLAYERS[0]
-            for player in self.PLAYERS:
-                if player.distance_to(self.SCREEN_HEIGHT / 2, 30) < best_player.distance_to(self.SCREEN_HEIGHT / 2, 30):
-                    best_player = player
-            best_player.draw_winner()
+        # Pause the game & draw the best player green
+        self.best_player = self.PLAYERS[0]
+        for player in self.PLAYERS:
+            if player.distance_to(self.SCREEN_HEIGHT / 2, 30) < self.best_player.distance_to(self.SCREEN_HEIGHT / 2, 30):
+                self.best_player = player
+        self.best_player.draw_winner()
 
-            self.GENERATION += 1
-            self.GAME_PAUSED = True
+        self.GENERATION += 1
+        self.GAME_PAUSED = True
 
     def start_next_generation(self):
-        # Create a new set of players
+        # Create all Players
+        self.PLAYERS = []
+        for _ in range(10):
+            # Create new players as clones from the best player, but evolve them
+            new_player = self.best_player.clone()
+            new_player.evolve(change_percentage=10)
+            self.PLAYERS.append(new_player)
 
-        # Redraw everything
+        # Keep the best player in case no one evolves better
+        self.PLAYERS.append(self.best_player.clone())
 
         # Reset rounds
-
-        # Unpause game
-
-        pass
+        self.ROUNDS_LEFT = self.ROUND_TIME
+        self.GAME_PAUSED = False
+        self.draw_everything()
 
 Game()
