@@ -15,6 +15,7 @@ class Player:
         # self.colour = (201, 201, 201) # Lighter
         # self.colour = (227, 227, 227) # More lighter
         self.colour = (242, 242, 242) # More more lighter
+        self.original_color = self.colour
 
         self.moves = [(1, 2), (3, 4), (5, 6)]
         self.move_counter = 0
@@ -88,20 +89,24 @@ class Player:
         new_player.moves = self.moves.copy()
         return new_player
 
-    # PRIVATE FUNCTIONS
-
-    def __kill(self):
+    def kill(self):
         if not self.dead:
             self.dead = True
             self.colour = (219, 0, 0) # Red
 
+    def draw_original_color(self):
+        self.colour = self.original_color
+        self.draw()
+
+    # PRIVATE FUNCTIONS
+
     def __check_outside_screen(self):
         # Check if the self.rect is outside the screen borders, if so, kill it
         if self.rect.y >= self.screen_height - self.size:
-            self.__kill()
+            self.kill()
         if self.rect.y <= 0- self.size:
-            self.__kill()
+            self.kill()
         if self.rect.x >= self.screen_width - self.size:
-            self.__kill()
+            self.kill()
         if self.rect.x <= 0 - self.size:
-            self.__kill()
+            self.kill()
