@@ -16,6 +16,7 @@ class Game:
         self.AUTO_RUN = True
 
         self.CLOCK = pygame.time.Clock()
+        self.PLAYER_COUNT = 50
         self.SCREEN_WIDTH = 800
         self.SCREEN_HEIGHT = 800
         self.ROUND_TIME = 100
@@ -28,7 +29,7 @@ class Game:
 
         # Create all Players
         self.PLAYERS = []
-        for _ in range(10):
+        for _ in range(self.PLAYER_COUNT):
             self.PLAYERS.append(Player(self.SCREEN_HEIGHT, self.SCREEN_WIDTH, self.SCREEN, self.ROUND_TIME))
 
         # Create Obstacles
@@ -102,9 +103,9 @@ class Game:
         self.PLAYERS[-1].draw_original_color()
         self.best_player = self.PLAYERS[0]
         for player in self.PLAYERS:
-            if not player.dead:
-                if player.distance_to(self.SCREEN_HEIGHT / 2, 30) < self.best_player.distance_to(self.SCREEN_HEIGHT / 2, 30):
-                    self.best_player = player
+            # if not player.dead:
+            if player.distance_to(self.SCREEN_HEIGHT / 2, 30) < self.best_player.distance_to(self.SCREEN_HEIGHT / 2, 30):
+                self.best_player = player
         self.best_player.draw_winner()
 
         self.GENERATION += 1
@@ -116,16 +117,15 @@ class Game:
     def start_next_generation(self):
         # Create all Players
         self.PLAYERS = []
-        for _ in range(10):
+        for index in range(self.PLAYER_COUNT):
             # Create new players as clones from the best player, but evolve them
             new_player = self.best_player.clone()
-            new_player.evolve(change_percentage=5)
+            new_player.evolve(change_percentage=50)
             self.PLAYERS.append(new_player)
 
         # Keep the best player in case no one evolves better
         new_player = self.best_player.clone()
         new_player.draw_winner()
-        print(new_player.moves)
         self.PLAYERS.append(new_player)
 
         # Reset rounds

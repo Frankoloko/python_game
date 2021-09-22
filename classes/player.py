@@ -21,7 +21,7 @@ class Player:
         self.move_counter = 0
         self.dead = False
         self.size = 10
-        self.move_speed = 20
+        self.move_speed = 50
 
         # Create X amount of moves for the player
         self.moves = []
