@@ -120,7 +120,7 @@ class Game:
         for index in range(self.PLAYER_COUNT):
             # Create new players as clones from the best player, but evolve them
             new_player = self.best_player.clone()
-            new_player.evolve(change_percentage=50)
+            new_player.evolve(change_percentage=(index / self.PLAYER_COUNT * 100))
             self.PLAYERS.append(new_player)
 
         # Keep the best player in case no one evolves better
