@@ -12,8 +12,8 @@ class Game:
         pygame.init()
         pygame.display.set_caption('Artificial Intelligence')
 
-        # self.AUTO_RUN = False
-        self.AUTO_RUN = True
+        self.AUTO_RUN = False
+        # self.AUTO_RUN = True
 
         self.CLOCK = pygame.time.Clock()
         self.PLAYER_COUNT = 50
@@ -73,14 +73,15 @@ class Game:
             obstacle.draw()
             obstacle.check_colissions(self.PLAYERS)
 
+        # Draw Goals
+        for goal in self.GLOALS:
+            goal.draw()
+            goal.check_colissions(self.PLAYERS)
+
         # Draw Players
         for player in self.PLAYERS:
             player.run_next_move()
             player.draw()
-
-        # Draw Goals
-        for goal in self.GLOALS:
-            goal.draw()
 
         # Draw text
         self.TXT_GENENRATION.draw(f'Generation: {self.GENERATION}')
@@ -110,7 +111,7 @@ class Game:
 
         self.GENERATION += 1
         self.GAME_PAUSED = True        
-            
+
         if self.AUTO_RUN:
             self.start_next_generation()
 
