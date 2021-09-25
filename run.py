@@ -47,8 +47,10 @@ class Game:
         self.TXT_GENENRATION = Text(self.SCREEN, FONT, (self.SCREEN_WIDTH - 185, 10))
 
         while True:
-            self.CLOCK.tick(15)
-        
+            # self.CLOCK.tick(15)
+            self.CLOCK.tick(1) # Slower
+            # self.CLOCK.tick(1000) # Faster
+
             for event in pygame.event.get():
                 if event.type == QUIT:
                     pygame.quit()

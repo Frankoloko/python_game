@@ -17,19 +17,18 @@ class Player:
         self.colour = (242, 242, 242) # More more lighter
         self.original_color = self.colour
 
-        self.moves = [(1, 2), (3, 4), (5, 6)]
+        self.direction_moves = []
         self.move_counter = 0
+        self.move_closer_counter = 0
         self.dead = False
         self.size = 10
-        self.move_speed = 50
+        self.direction_steps = 50 # How many steps to take in each direction
 
-        # Create X amount of moves for the player
-        self.moves = []
+        # Create X amount of direction_moves for the player
+        self.direction_moves = []
         for _ in range(rounds):
-            # self.moves.append((randint(-self.move_speed, self.move_speed), randint(-self.move_speed, self.move_speed)))
-
             random_degree = randint(1, 360)
-            self.moves.append(random_degree)
+            self.direction_moves.append(random_degree)
 
         # Start at bottom of screen
         self.rect = pygame.Rect(self.screen_width / 2, self.screen_height - 20, self.size, self.size)
@@ -38,12 +37,17 @@ class Player:
 
     def run_next_move(self):
         if not self.dead:
-            degree = self.moves[self.move_counter]
+            degree = self.direction_moves[self.move_counter]
             radians = degree * (math.pi / 180)
-            degree_vector = (math.cos(radians) * self.move_speed, math.sin(radians) * self.move_speed)
+            degree_vector = (round(math.cos(radians) * 100), round(math.sin(radians) * 100))
 
-            self.rect.move_ip(degree_vector)
-            self.move_counter += 1
+            self.rect.move_ip(degree_vector) # move_ip can only move to integers. Floats are rounded DOWN (so 0.9 becomes 0)
+
+            self.move_closer_counter += 1
+            if self.move_closer_counter == self.direction_steps:
+                self.move_closer_counter = 0
+                self.move_counter += 1
+
             self.__check_outside_screen()
 
     def draw(self):
@@ -66,11 +70,11 @@ class Player:
 
     def evolve(self, change_percentage):
         '''
-            Evolve will take this players moves, evolve them a bit, then return a new player object
-            with those moves
+            Evolve will take this players direction_moves, evolve them a bit, then return a new player object
+            with those direction_moves
         '''
-        # Make the player the current player's moves, but with a percentage change
-        array_left = len(self.moves)
+        # Make the player the current player's direction_moves, but with a percentage change
+        array_left = len(self.direction_moves)
         random_changes = round(array_left * (change_percentage / 100))
         used_indexes = []
         for _ in range(random_changes):
@@ -79,14 +83,14 @@ class Player:
                 random_index = randint(0, array_left - 1)
             used_indexes.append(random_index)
             random_degree = randint(1, 360)
-            self.moves[random_index] = random_degree
+            self.direction_moves[random_index] = random_degree
 
     def clone(self):
         '''
             This creates a copy of this player AND IT'S MOVES, but resets all other values
         '''
         new_player = Player(self.screen_height, self.screen_width, self.screen, self.rounds)
-        new_player.moves = self.moves.copy()
+        new_player.direction_moves = self.direction_moves.copy()
         return new_player
 
     def kill(self):

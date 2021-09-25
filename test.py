@@ -1,46 +1,35 @@
-# import math
+from classes.player import Player
+from classes.obstacle import Obstacle
+from classes.goal import Goal
+from classes.text import Text
+import pygame
+from pygame.locals import * # https://www.pygame.org/docs/ref/key.html#module-pygame.key
 
-# degree = 180.0 # (-1, 0) # links # WRONG (-1, -1)
-# degree_vector = ( round( math.sin(degree) ), round( math.sin(degree) ) )
+pygame.init()
+CLOCK = pygame.time.Clock()
 
-# # degree = 270.0 / 2 # (0, -1) # af # WRONG (1, 0)
-# # degree_vector = ( round( math.sin(degree) ), round( math.cos(degree) ) )
+screen = pygame.display.set_mode((800, 800))
 
-# # degree = 0.0 # (1, 0) # regs # REG
-# # degree = 90.0 # (0, 1) # boontoe # REG
-# # degree_vector = ( round( math.cos(degree) ), round( math.sin(degree) ) )
-
-# # print(degree_vector)
-
-# # while degree >= 360.0:
-# #     degree -= 360.0
-
-# # degree = 0.0
-# # vector = ( round(math.sin(degree)), round(math.cos(degree)))
-# # print(f'Op {degree}, {vector}')
-
-# # degree = 90.0
-# # vector = ( round(math.sin(degree)), round(math.cos(degree)))
-# # print(f'Regs {degree}, {vector}')
-
-# # degree = 180.0
-# # vector = ( round(math.sin(degree)), round(math.cos(degree)))
-# # print(f'Af {degree}, {vector}')
-
-# # degree = 270.0
-# # vector = ( round(math.sin(degree)), round(math.cos(degree)))
-# # print(f'Links {degree}, {vector}')
+rect_1 = pygame.Rect(800 / 2, 800 / 2, 10, 10)
+rect_2 = pygame.Rect(800 / 2, 800 / 2, 10, 10)
 
 
-# # print(round(math.sin(90.0)), round(math.cos(90.0)), round(math.tan(90.0)))
-# # print(round(math.sin(180.0)), round(math.cos(180.0)), round(math.tan(180.0)))
-# # print(round(math.sin(270.0)), round(math.cos(270.0)), round(math.tan(270.0)))
+while True:
+    CLOCK.tick(1)
+    # CLOCK.tick(1000)
 
-# # print(round(math.sin(0)), round(math.cos(0)), round(math.tan(0)))
-# # print(round(math.sin(360.0)), round(math.cos(360.0)), round(math.tan(360.0)))
+    for event in pygame.event.get():
+        if event.type == QUIT:
+            pygame.quit()
+        elif event.type == KEYDOWN:
+            if event.key == K_ESCAPE:
+                pygame.quit()
 
-import math
+    screen.fill((36, 36, 36))
+    rect_1.move_ip((1, 1))
+    rect_2.move_ip((1, 1))
 
-degree = 100.0
-radians = degree * (math.pi / 180)
-vector = (math.cos(radians), math.sin(radians))
+    pygame.draw.rect(screen, (242, 242, 242), rect_1)
+    pygame.draw.rect(screen, (242, 242, 242), rect_2)
+
+    pygame.display.flip()
